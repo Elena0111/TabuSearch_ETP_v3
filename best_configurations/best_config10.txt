@@ -1,0 +1,15 @@
+PRESOLVE 1
+TIMELIMIT 3000
+MIPGAP 1e-12
+THREADS 8
+SORTER 0
+KERNELBUILDER 0
+KERNELSIZE 443
+BUCKETSIZE 20
+BUCKETBUILDER 0
+TIMELIMITKERNEL 0
+NUMITERATIONS 1
+TIMELIMITBUCKET 70
+
+Con il constraint 4 alternativo attivo con 4 fisso
+Aggiungi solo 10 secondi a ogni bucket: tempo totale 1872 secondi

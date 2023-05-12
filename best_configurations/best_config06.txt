@@ -1,0 +1,14 @@
+PRESOLVE 1
+TIMELIMIT 3000
+MIPGAP 1e-12
+THREADS 8
+KERNELSIZE 322
+BUCKETSIZE 100
+NUMITERATIONS 1
+TIMELIMITBUCKET 100
+
+
+Con il constraint 4 alternativo attivo con 0,0128
+Aggiungi solo 10 secondi a ogni bucket
+Impiega 1082 secondi
+Best: 4,829

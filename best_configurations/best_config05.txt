@@ -1,0 +1,18 @@
+PRESOLVE 					1
+KERNEL_SIZE				    381			--371
+BUCKET_SIZE 				20			--30
+TIME_FIRST_BUCKET 			25  //30	--40
+TIME_ADDED_TO_EACH_BUCKET   25  //30	--40
+MIN_EXAMS_PER_PERIOD 		6			--9
+METHOD						3
+THREADS 					8
+NUM_ITERATIONS 				1
+
+--Best: 17.580
+--Tempo: 310 secondi
+
+Best: 17.250
+Tempo: 378 secondi
+
+//Best: 17.215
+//Tempo: 483 secondi
