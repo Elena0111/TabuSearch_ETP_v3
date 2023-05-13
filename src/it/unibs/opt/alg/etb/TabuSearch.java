@@ -9,12 +9,13 @@ import java.util.Map;
 
 public class TabuSearch {
 	
-	private static final int MIN_EXAM_INDEX = 140;
-	private static final int MAX_ITERATIONS = 20;
-	//private static final int RANDOM_ITERATIONS = 5;
-	private static final int TABU_TENURE = 4;
-	private static final int start_randomExam = 100;
-	private static final int randomExams = 80;
+	private static final double THRESHOLD = 0.1;
+	private static final int MAX_ITER_LAST_IMPROVEMENT = 7;
+	private static final int MIN_EXAM_INDEX = 160;
+	private static final int MAX_ITERATIONS = 15;
+	private static final int TABU_TENURE = 10;
+	private static final int START_RANDOM_EXAM = 110;
+	private static final int RANDOM_EXAMS = 50;
 	
 	Model model;
 	Solution bestSolution;
@@ -28,9 +29,6 @@ public class TabuSearch {
 	int examIndex;
 	int numIteration = 0;
 	Map<String, Integer> tenure = new HashMap<>();
-	
-	//nuova modifica
-	int nenniSciocca = 10000000;
 	
 	public TabuSearch(int[] sortedExams, int [] ne1e2, int E, int T, String solutionPath, Instant startTime) {
 		this.model = new Model();
@@ -54,7 +52,7 @@ public class TabuSearch {
 	}
 	
 	private void move() {
-		int max_iter_last_improvement=10;
+		int max_iter_last_improvement=MAX_ITER_LAST_IMPROVEMENT;
 		//stop criterion
 		if(max_iter_last_improvement == 0) {
 			return;
@@ -63,9 +61,9 @@ public class TabuSearch {
 		StringBuilder candidateTabu = new StringBuilder("");
 		for(int i=E-1; i >= MIN_EXAM_INDEX; i--) {
 			int e = sortedExams[i];
-			if(localmoveisConvinient(e, localBestSolution, candidateTabu)) {//aggiorna in convinient
-				numIteration++;
-				max_iter_last_improvement=5;
+			if(localmoveisConvinient(e, localBestSolution, candidateTabu, THRESHOLD)) {//aggiorna in convinient
+				//numIteration++;
+				max_iter_last_improvement=7;
 				printObjFunct();
 				move();
 				return;
@@ -77,15 +75,14 @@ public class TabuSearch {
 			updateTenure();
 			tenure.put(candidateTabu.toString(),TABU_TENURE);
 		}
-		numIteration++;
+		//numIteration++;
 		max_iter_last_improvement--;
 		printObjFunct();
-		//System.out.println("\n\nTempo impiegato dal Tabu Search: " + Duration.between(startTime, Instant.now()).getSeconds() + " secondi");
 		move();
 	}
 	
 	private int randomIndex() {
-		return (int) (start_randomExam + Math.round(Math.random()*randomExams));
+		return (int) (START_RANDOM_EXAM + Math.round(Math.random()*RANDOM_EXAMS));
 	}
 	
 	private void randomMove() {
@@ -99,7 +96,7 @@ public class TabuSearch {
 		do {
 			int e = sortedExams[examIndex];
 			//il primo valore che è ammissibile fa un move
-			if(localmoveisConvinient(e, localBestSolution, candidateTabu)) {
+			if(localmoveisConvinient(e, localBestSolution, candidateTabu, 0)) {
 				//examIndex = randomIndex();
 				numIteration++;
 				printObjFunct();
@@ -126,7 +123,7 @@ public class TabuSearch {
 				+ "of Tabu Search: %.3f\n*\n*\n*\n*\n*", numIteration, bestSolution.getObj());
 	}
 	
-	private boolean localmoveisConvinient(int e, Solution localBestSolution, StringBuilder candidateTabu) {
+	private boolean localmoveisConvinient(int e, Solution localBestSolution, StringBuilder candidateTabu, double threshold) {
 		Solution currentSolution = new Solution();
 		assignSolution(currentSolution, bestSolution);
 		//metodi per impostare la y e le u, che nella soluzione originale valgono uno, a zero
@@ -143,7 +140,7 @@ public class TabuSearch {
 					model.isFeasible(currentSolution);
 					double objFunct = model.getObjFunct();//getObjFunct(ne1e2, currentSolution);
 					currentSolution.setObj(objFunct);
-					if(objFunct < bestSolution.getObj() /*- objFunct <= 0.01 dopo rimetti >=*/) {
+					if(bestSolution.getObj() - objFunct > threshold) {
 						assignSolution(bestSolution, currentSolution);
 						updateTenure();
 						tenure.put(fixedVar,TABU_TENURE);
