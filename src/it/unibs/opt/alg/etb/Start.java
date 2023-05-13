@@ -12,7 +12,7 @@ public class Start {
 //		String pathConfig = args[2];
 		
 		Instant startTime = Instant.now();
-		String path = "C:\\Users\\elena\\Documents\\Optimization_Algorithms\\instances\\instance02";
+		String path = "C:\\Users\\dario\\Documents\\Optimization_Algorithms\\PROJECT_2\\instances\\instance02";
 		
 		InstanceReaderWriter reader = new InstanceReaderWriter();
 		int T = reader.totalTimeSlots(path+".slo");

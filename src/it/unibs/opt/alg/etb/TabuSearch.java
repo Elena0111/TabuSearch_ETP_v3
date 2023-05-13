@@ -29,6 +29,9 @@ public class TabuSearch {
 	int numIteration = 0;
 	Map<String, Integer> tenure = new HashMap<>();
 	
+	//nuova modifica
+	int nenniSciocca = 10000000;
+	
 	public TabuSearch(int[] sortedExams, int [] ne1e2, int E, int T, String solutionPath, Instant startTime) {
 		this.model = new Model();
 		this.bestSolution = model.getSolution();
